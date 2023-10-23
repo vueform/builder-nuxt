@@ -1,5 +1,5 @@
 import { existsSync } from 'fs'
-import { NuxtModule } from '@nuxt/schema'
+import type { NuxtModule } from '@nuxt/schema'
 import { resolve } from 'pathe'
 import {
   defineNuxtModule,
@@ -7,6 +7,7 @@ import {
   createResolver,
 } from '@nuxt/kit'
 
+// Module options TypeScript interface definition
 export interface ModuleOptions {
   configPath?: string,
   builderConfigPath?: string,
@@ -27,6 +28,11 @@ const module: NuxtModule<ModuleOptions> = defineNuxtModule<ModuleOptions>({
   async setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
 
+    nuxt.hook('prepare:types', (opts) => {
+      opts.references.push({ types: '@vueform/vueform' })
+    })
+
+    nuxt.options.build.transpile.push('@vueform/vueform')
     nuxt.options.build.transpile.push('@vueform/builder')
 
     nuxt.options.vite.optimizeDeps = {
@@ -76,15 +82,14 @@ const module: NuxtModule<ModuleOptions> = defineNuxtModule<ModuleOptions>({
 
         export default defineNuxtPlugin(async (nuxtApp) => {
           if (process.client) {
-            const Vueform = (await import('@vueform/vueform/plugin.js')).default
+            const vueform = (await import('@vueform/vueform')).vueform
             const vueformConfig = (await import('${configPath}')).default
             const Builder = (await import('@vueform/builder')).default
             const builderConfig = (await import('${builderConfigPath}')).default
             
-            nuxtApp.vueApp.use(Vueform, vueformConfig)
+            nuxtApp.vueApp.use(vueform, vueformConfig)
             nuxtApp.vueApp.use(Builder, builderConfig)
           }
-
         })
         `
       },

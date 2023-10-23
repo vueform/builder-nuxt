@@ -1,8 +1,5 @@
-<div align="left"><br>
-  <a href="https://vueform.com?ref=github"><img src="https://github.com/vueform/multiselect/raw/main/assets/logo-horizontal.svg" width="200"></a>
-</div>
+<a href="https://builder.vueform.com?cid=nuxt-builder"><img src="https://raw.githubusercontent.com/vueform/builder/main/.github/assets/banner.svg"></a>
 
-
-# Official Nuxt module for Vueform Builder.
+# Official Nuxt module for Vueform Builder
 
 Installation steps: https://builder.vueform.com/docs/installation
